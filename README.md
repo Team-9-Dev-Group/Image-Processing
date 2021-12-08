@@ -5,7 +5,8 @@ CS263 Project 01
 Tirth Joshi ,
 Foram Talpada ,
 Riya Parikh ,
-Madhur Gupta
+Madhur Gupta,
+Hetvi Soni
 
 # Root File
 https://github.com/tirth5828/CodeInPlace-21.git
