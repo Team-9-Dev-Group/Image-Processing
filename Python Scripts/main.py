@@ -137,10 +137,36 @@ def blur(image, kernel_size):
                     total_red += image.get_pixel(xi, yi).red
                     total_green += image.get_pixel(xi, yi).green
                     total_blue += image.get_pixel(xi, yi).blue
-                    num += 1
-            Pixel(output, x, y).red = total_red / num
-            Pixel(output, x, y).green = total_green / num
-            Pixel(output, x, y).blue = total_blue / num
+                    num += 1   
+            Pixel(output, x, y).red = total_red // num
+            Pixel(output, x, y).green = total_green // num
+            Pixel(output, x, y).blue = total_blue // num
+    return output
+
+def blur_optimised(image, kernel_size):
+    strip1 = [0,0,0]
+    strip2 = [0,0,0]
+    strip3 = [0,0,0]
+    blur_range = kernel_size // 2
+    output = SimpleImage.blank(image.width, image.height)
+    for x in range(image.width):
+        for y in range(image.height):
+            strip1,strip2 = strip2,strip3
+            num = 0
+            xi = min(image.width - 1, x + blur_range)
+            total_red = 0
+            total_green = 0
+            total_blue = 0
+            for yi in range(max(0, y - blur_range), min(image.height - 1, y + blur_range) + 1):
+                total_red += image.get_pixel(xi, yi).red
+                total_green += image.get_pixel(xi, yi).green
+                total_blue += image.get_pixel(xi, yi).blue
+                num += 1 
+            strip3 = [total_red,total_green,total_blue]
+                  
+            Pixel(output, x, y).red = strip1[0] + strip2[0] + strip3[0] // num
+            Pixel(output, x, y).green = strip1[1] + strip2[1] + strip3[1] // num
+            Pixel(output, x, y).blue = strip1[2] + strip2[2] + strip3[2] // num
     return output
 
 
@@ -179,15 +205,23 @@ def combine_image_in_one(image1, image2):
 def main():
     print("Start")
 
-    image1 = SimpleImage("city.png")
+    root = "C:\\Users\\TIRTH JOSHI\\Desktop\\acc\\Image-Processing\\Python Scripts\\"
+
+    image1 = SimpleImage(root+"city.png")
 
     i1 = blur(image1, 3)
     combine_images(image1, i1, 1).show()
 
+
+    image1 = SimpleImage(root+"city.png")
+
+    i1 = blur_optimised(image1, 3)
+    combine_images(image1, i1, 1).show()
+'''
     i2 = blur(image1, 10)
     combine_images(image1, i2, 1).show()
 
-    image2 = SimpleImage("1234.jpg")
+    image2 = SimpleImage(root+"1234.jpg")
 
     kernel_x = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]  # X edge detection kernel
     kernel_y = [[1, 0, -1], [2, 0, -2], [1, 0, -1]]  # Y edge detection kernel
@@ -201,30 +235,30 @@ def main():
     i5 = combine_image_in_one(i3, i4)
     combine_images(image2, i5, 1).show()
 
-    image3 = SimpleImage("bird.jpg")
-    image4 = SimpleImage("green.jpg")
+    image3 = SimpleImage(root+"bird.jpg")
+    image4 = SimpleImage(root+"green.jpg")
     combine_images(image3, image4, 1).show()
 
     i6 = green_screen(image3, image4)
     i6.show()
 
-    image5 = SimpleImage("123.jpg")
+    image5 = SimpleImage(root+"123.jpg")
     i7 = grayscale(image5)
-    image5 = SimpleImage("123.jpg")
+    image5 = SimpleImage(root+"123.jpg")
     combine_images(image5, i7, 1).show()
 
-    image6 = SimpleImage("lake.png")
+    image6 = SimpleImage(root+"lake.png")
     i8 = brighter(image6)
-    image6 = SimpleImage("lake.png")
+    image6 = SimpleImage(root+"lake.png")
     combine_images(image6, i8, 1).show()
 
-    image7 = SimpleImage("lake.png")
+    image7 = SimpleImage(root+"lake.png")
     i9 = contrast(image7, 3)
-    image7 = SimpleImage("lake.png")
+    image7 = SimpleImage(root+"lake.png")
     combine_images(image7, i9, 1).show()
 
     print("End")
-
+'''
 
 if __name__ == '__main__':
     main()

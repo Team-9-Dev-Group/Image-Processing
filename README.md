@@ -8,6 +8,3 @@ Riya Parikh ,
 Madhur Gupta,
 Hetvi Soni
 
-# Root File
-https://github.com/tirth5828/CodeInPlace-21.git
-
