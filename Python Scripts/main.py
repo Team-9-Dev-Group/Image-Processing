@@ -143,33 +143,6 @@ def blur(image, kernel_size):
             Pixel(output, x, y).blue = total_blue // num
     return output
 
-def blur_optimised(image, kernel_size):
-    strip1 = [0,0,0]
-    strip2 = [0,0,0]
-    strip3 = [0,0,0]
-    blur_range = kernel_size // 2
-    output = SimpleImage.blank(image.width, image.height)
-    for x in range(image.width):
-        for y in range(image.height):
-            strip1,strip2 = strip2,strip3
-            num = 0
-            xi = min(image.width - 1, x + blur_range)
-            total_red = 0
-            total_green = 0
-            total_blue = 0
-            for yi in range(max(0, y - blur_range), min(image.height - 1, y + blur_range) + 1):
-                total_red += image.get_pixel(xi, yi).red
-                total_green += image.get_pixel(xi, yi).green
-                total_blue += image.get_pixel(xi, yi).blue
-                num += 1 
-            strip3 = [total_red,total_green,total_blue]
-                  
-            Pixel(output, x, y).red = strip1[0] + strip2[0] + strip3[0] // num
-            Pixel(output, x, y).green = strip1[1] + strip2[1] + strip3[1] // num
-            Pixel(output, x, y).blue = strip1[2] + strip2[2] + strip3[2] // num
-    return output
-
-
 def apply_kernel(image, kernel):
     kernel_range = len(kernel) // 2
     output = SimpleImage.blank(image.width, image.height)
